@@ -9,10 +9,13 @@ export function IconButton({ transparent, ...props }: IconButtonProps) {
   return (
     <button
       {...props}
-      className={clsx("border border-white/10 rounded-md p-1.5", {
-        ["bg-black/10"]: transparent,
-        ["bg-white/10"]: !transparent,
-      })}
+      className={clsx(
+        "border border-white/10 rounded-md p-1.5 disabled:cursor-not-allowed disabled:opacity-50",
+        {
+          ["bg-black/10"]: transparent,
+          ["bg-white/10"]: !transparent,
+        }
+      )}
     />
   );
 }
