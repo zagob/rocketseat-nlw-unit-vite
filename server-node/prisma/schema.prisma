@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,13 +8,12 @@ datasource db {
 }
 
 model Event {
-  id               String  @id @default(uuid())
+  id               String     @id @default(uuid())
   title            String
   details          String?
-  slug             String  @unique
-  maximumAttendees Int?    @map("maximum_attendees")
-
-  attendees Attendee[]
+  slug             String     @unique
+  maximumAttendees Int?       @map("maximum_attendees")
+  attendees        Attendee[]
 
   @@map("events")
 }
@@ -37,11 +33,10 @@ model Attendee {
 }
 
 model CheckIn {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now()) @map("created_at")
-
-  attendee   Attendee @relation(fields: [attendeeId], references: [id], onDelete: Cascade)
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now()) @map("created_at")
   attendeeId Int      @unique @map("attendee_id")
+  attendee   Attendee @relation(fields: [attendeeId], references: [id], onDelete: Cascade)
 
   @@map("check_ins")
 }
