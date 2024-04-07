@@ -2,11 +2,13 @@ import fastify from "fastify";
 
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUI from "@fastify/swagger-ui";
+import fastifyCors from "@fastify/cors";
 
 import {
   serializerCompiler,
   validatorCompiler,
   jsonSchemaTransform,
+  ZodTypeProvider,
 } from "fastify-type-provider-zod";
 import { createEvent } from "./routes/create-event";
 import { registerForEvent } from "./routes/register-for-event";
@@ -16,7 +18,11 @@ import { checkIn } from "./routes/check-in";
 import { getEventAttendees } from "./routes/get-event-attendees";
 import { errorHandler } from "./error-handler";
 
-const app = fastify();
+const app = fastify().withTypeProvider<ZodTypeProvider>();
+
+app.register(fastifyCors, {
+  origin: "*",
+});
 
 app.register(fastifySwagger, {
   swagger: {
@@ -48,4 +54,6 @@ app.register(checkIn);
 
 app.setErrorHandler(errorHandler);
 
-app.listen({ port: 3333 }).then(() => console.log("Server running..."));
+app
+  .listen({ port: 3333, host: "0.0.0.0" })
+  .then(() => console.log("Server running..."));
